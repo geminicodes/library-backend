@@ -13,6 +13,8 @@ const {
     GraphQLNonNull
 } = graphql;
 
+// add more queries
+
 const BookType = new GraphQLObjectType({
     name: "Book",
     fields: () => ({
