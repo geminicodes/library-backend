@@ -21,6 +21,8 @@ const BookType = new GraphQLObjectType({
         id: {type: GraphQLID},
         name: {type: GraphQLString},
         genre: {type: GraphQLString},
+        language: {type: GraphQLString},
+        status: {type: GraphQLString},
         author: {
             type: AuthorType,
             resolve(parent, args){
@@ -36,7 +38,7 @@ const AuthorType = new GraphQLObjectType({
     fields: () => ({
         id: {type: GraphQLID},
         name: {type: GraphQLString},
-        age: {type: GraphQLInt},
+        //age: {type: GraphQLInt},
         books: {
             type: new GraphQLList(BookType),
             resolve(parent, args){
@@ -90,12 +92,12 @@ const Mutation = new GraphQLObjectType({
             type: AuthorType,
             args: {
                 name: {type: new GraphQLNonNull(GraphQLString)},
-                age: {type: new GraphQLNonNull(GraphQLInt)}
+                //age: {type: new GraphQLNonNull(GraphQLInt)}
             },
             resolve(parent, args){
                 let author = new Author({
                     name: args.name,
-                    age: args.age
+                    //age: args.age
                 });
                 return author.save();
             }
@@ -106,12 +108,16 @@ const Mutation = new GraphQLObjectType({
                 name: {type: new GraphQLNonNull(GraphQLString)},
                 genre: {type: new GraphQLNonNull(GraphQLString)},
                 authorId: {type: new GraphQLNonNull(GraphQLID)},
+                language: {type: new GraphQLNonNull(GraphQLString)},
+                status: {type: new GraphQLNonNull(GraphQLString)},
             },
             resolve(parent, args) {
                 let book = new Book({
                     name: args.name,
                     genre: args.genre,
-                    authorId: args.authorId
+                    authorId: args.authorId,
+                    language: args.language,
+                    status: args.status,
                 })
                 return book.save();
             }
@@ -123,3 +129,4 @@ module.exports = new GraphQLSchema({
     query:RootQuery,
     mutation: Mutation
 });
+
