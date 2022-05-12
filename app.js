@@ -3,18 +3,21 @@ const {graphqlHTTP} = require("express-graphql");
 const schema = require("./schema/schema");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const dotenv = require("dotenv");
 
 const app = express();
 
 app.use(cors());
 
+dotenv.config();
+
 mongoose
- .connect("mongodb+srv://geminicodes:q22222@library-project.t5woi.mongodb.net/library-project?retryWrites=true&w=majority", {
+ .connect(process.env.CONNECTION_URL, {
   useNewUrlParser: true,
   
   useUnifiedTopology: true
  })
- .then(() => console.log('MongoDB connected'))
+ .then(() => console.log("MongoDB connected"))
  .catch(err => console.log(err));
 
 app.use("/graphql", graphqlHTTP ({
@@ -22,6 +25,6 @@ app.use("/graphql", graphqlHTTP ({
     graphiql: true
 }));
 
-app.listen(4000, () => {
+app.listen(process.env.PORT, () => {
     console.log("Hello World!");
 });
