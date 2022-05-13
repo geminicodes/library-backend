@@ -7,18 +7,8 @@ const dotenv = require("dotenv");
 
 const app = express();
 
-app.use(cors());
-
 dotenv.config();
-
-mongoose
- .connect(process.env.CONNECTION_URL, {
-  useNewUrlParser: true,
-  
-  useUnifiedTopology: true
- })
- .then(() => console.log("MongoDB connected"))
- .catch(err => console.log(err));
+app.use(cors());
 
 app.use("/graphql", graphqlHTTP ({
     schema,
@@ -29,6 +19,7 @@ app.get('/', (req, res) => {
     res.send('Hello, World!');
 })
 
-app.listen(process.env.PORT, () => {
-    console.log("Hello World!");
-});
+mongoose.connect(process.env.CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => app.listen(process.env.PORT, () => console.log(`Server Running on Port: http://localhost:${process.env.PORT}`)))
+    .catch((error) => console.log(`${error} did not connect`));
+
